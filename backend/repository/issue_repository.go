@@ -13,16 +13,10 @@ var (
 	idCounter   uint = 1
 )
 
-var predefinedUsers = []*model.User{
-	{ID: 1, Name: "김개발"},
-	{ID: 2, Name: "이디자인"},
-	{ID: 3, Name: "박기획"},
-}
-
 func GetUserByID(id uint) *model.User {
-	for _, u := range predefinedUsers {
+	for _, u := range model.PredefinedUsers {
 		if u.ID == id {
-			return u
+			return &u
 		}
 	}
 	return nil

@@ -11,13 +11,6 @@ import (
 	"itops-assignment/repository"
 )
 
-var validStatuses = map[string]bool{
-	"PENDING":     true,
-	"IN_PROGRESS": true,
-	"COMPLETED":   true,
-	"CANCELLED":   true,
-}
-
 func errorResponse(w http.ResponseWriter, message string, code int) {
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -71,7 +64,7 @@ func CreateIssueHandler(w http.ResponseWriter, r *http.Request) {
 
 func ListIssuesHandler(w http.ResponseWriter, r *http.Request) {
 	status := r.URL.Query().Get("status")
-	if status != "" && !validStatuses[status] {
+	if status != "" && !model.ValidStatuses[status] {
 		errorResponse(w, "Invalid status", http.StatusBadRequest)
 		return
 	}
@@ -147,7 +140,7 @@ func UpdateIssueHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if req.Status != nil {
-		if !validStatuses[*req.Status] {
+		if !model.ValidStatuses[*req.Status] {
 			errorResponse(w, "Invalid status", http.StatusBadRequest)
 			return
 		}
